@@ -215,7 +215,14 @@ const data = [{
 
         tdPhone.append(phoneLink);
 
-        tr.append(tdDel, tdName, tdSurname, tdPhone);
+        const tdEditButton = document.createElement('td');
+        const editButton = document.createElement('button');
+        editButton.classList.add('btn');
+        editButton.classList.add('btn-primary');
+        editButton.textContent = 'Редактировать';
+        tdEditButton.append(editButton);
+
+        tr.append(tdDel, tdName, tdSurname, tdPhone, tdEditButton);
 
         return tr;
     };
