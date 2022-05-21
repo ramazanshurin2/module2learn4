@@ -162,7 +162,7 @@ const data = [{
         const logo = createLogo(title);
         const main = createMain();
         const buttonGroup = createButtonsGroup([{
-                className: 'btn btn-primary mr-3',
+                className: 'btn btn-primary mr-3 js-add',
                 type: 'button',
                 text: 'Добавить',
             },
@@ -183,6 +183,10 @@ const data = [{
 
         return {
             list: table.tbody,
+            logo,
+            btnAdd: buttonGroup.btns[0],
+            formOverlay: form.overlay,
+            form: form.form,
         };
     };
 
@@ -207,6 +211,7 @@ const data = [{
         const phoneLink = document.createElement('a');
         phoneLink.href = `tel:${phone}`;
         phoneLink.textContent = phone;
+        tr.phoneLink = phoneLink;
 
         tdPhone.append(phoneLink);
 
@@ -220,16 +225,94 @@ const data = [{
     const renderContacts = (elem, data) => {
         const allRow = data.map(createRow);
         elem.append(...allRow);
+        return allRow;
+    };
+
+    const hoverRow = (allRow, logo) => {
+        const text = logo.textContent;
+        allRow.forEach(contact => {
+            contact.addEventListener('mouseenter', () => {
+                logo.textContent = contact.phoneLink.textContent;
+            });
+            contact.addEventListener('mouseleave', () => {
+                logo.textContent = text;
+            });
+        });
+    };
+
+    const bubblingCapturing = () => {
+        const btnAdd = document.querySelector('.js-add');
+        const btnWrapper = document.querySelector('.btn-wrapper');
+
+        const main = document.querySelector('main');
+        const app = document.querySelector('#app');
+        const body = document.querySelector('body');
+
+        btnAdd.addEventListener('click', () => {});
+        btnWrapper.addEventListener('click', () => {});
+        main.addEventListener('click', () => {});
+        app.addEventListener('click', () => {});
+        body.addEventListener('click', () => {});
+
     };
 
     const init = (selectorApp, title) => {
         const app = document.querySelector(selectorApp);
         const phoneBook = renderPhoneBook(app, title);
 
-        const { list } = phoneBook;
+        const { list, logo, btnAdd, formOverlay, form } = phoneBook;
 
-        renderContacts(list, data);
         // Функционал
+        const allRow = renderContacts(list, data);
+        hoverRow(allRow, logo);
+
+        // const objEvent = {
+        //     a: 1,
+        //     b: 10,
+        //     handleEvent(event) {
+        //         if (event.ctrlKey) {
+        //             this.bar();
+        //         } else {
+        //             this.foo();
+        //         }
+
+        //         // formOverlay.classList.add('is-visible');
+        //     },
+        //     bar() {
+        //         document.body.style.backgroundColor = 'black';
+        //     },
+        //     foo() {
+        //         formOverlay.classList.add('is-visible');
+        //     }
+        // };
+
+        // btnAdd.addEventListener('click', objEvent);
+
+        // bubblingCapturing();
+
+        btnAdd.addEventListener('click', () => {
+            formOverlay.classList.add('is-visible');
+        });
+
+        form.addEventListener('click', event => {
+            event.stopPropagation();
+        });
+
+        formOverlay.addEventListener('click', () => {
+            formOverlay.classList.remove('is-visible');
+        });
+
+        document.addEventListener('touchstart', () => {
+
+        });
+
+        document.addEventListener('touchmove', () => {
+
+        });
+
+        document.addEventListener('touchend', () => {
+
+        });
     };
 
     window.phoneBookInit = init;
