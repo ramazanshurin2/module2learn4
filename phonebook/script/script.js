@@ -278,9 +278,16 @@ const data = [{
             btnDel,
         } = phoneBook;
 
+
+        const tdClose = document.querySelector('.delete');
+        const tr = tdClose.closest('tr');
+        const tdName = tr.children[1];
+        const tdSurname = tr.children[2];
         // Функционал
         const allRow = renderContacts(list, data);
         hoverRow(allRow, logo);
+
+
 
 
         btnAdd.addEventListener('click', () => {
@@ -319,17 +326,49 @@ const data = [{
             list.append(contact);
         }, 2000);
 
-        document.addEventListener('touchstart', () => {
+        tdName.addEventListener('click', () => {
+            data.sort(function(a, b) {
+                if (a.name > b.name) {
+                    return 1;
+                }
+                if (a.name < b.name) {
+                    return -1;
+                }
+                return 0;
+            });
+            const tbody = document.querySelector('tbody');
+            const trs = tbody.querySelectorAll('tr');
+            console.log(trs);
+            trs.forEach(e => {
+                e.remove();
+            });
+            const allRow = data.map(createRow);
 
+            list.append(...allRow);
         });
 
-        document.addEventListener('touchmove', () => {
+        tdSurname.addEventListener('click', () => {
+            data.sort(function(a, b) {
+                if (a.surname > b.surname) {
+                    return 1;
+                }
+                if (a.surname < b.surname) {
+                    return -1;
+                }
+                return 0;
+            });
+            const tbody = document.querySelector('tbody');
+            const trs = tbody.querySelectorAll('tr');
+            console.log(trs);
+            trs.forEach(e => {
+                e.remove();
+            });
+            const allRow = data.map(createRow);
 
+            list.append(...allRow);
         });
 
-        document.addEventListener('touchend', () => {
 
-        });
     };
 
     window.phoneBookInit = init;
